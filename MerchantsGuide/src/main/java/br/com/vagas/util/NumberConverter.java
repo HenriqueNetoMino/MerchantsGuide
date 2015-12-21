@@ -1,7 +1,7 @@
 package br.com.vagas.util;
 
 import br.com.vagas.enums.Roman;
-import br.com.vagas.information.Definitions;
+import br.com.vagas.model.Definitions;
 
 public class NumberConverter {
 

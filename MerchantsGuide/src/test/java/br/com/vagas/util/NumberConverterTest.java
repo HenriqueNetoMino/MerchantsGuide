@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.vagas.enums.Roman;
-import br.com.vagas.information.Definitions;
+import br.com.vagas.model.Definitions;
 
 public class NumberConverterTest {
 

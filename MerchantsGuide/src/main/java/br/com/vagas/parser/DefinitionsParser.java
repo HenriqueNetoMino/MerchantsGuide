@@ -1,24 +1,16 @@
-package br.com.vagas.information;
+package br.com.vagas.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import br.com.vagas.enums.Roman;
+import br.com.vagas.model.Definitions;
 
-public class Definitions {
-	Map<String, Roman> definitionData = new HashMap<String, Roman>();
+public class DefinitionsParser {
 	List<String> lineDefinition = new ArrayList<String>();
 
-	public void addDefinition(String alienNumber, Roman romanNumber)
-	{
-		this.definitionData.put(alienNumber, romanNumber);
-	}
-
-	public Roman getRoman(String alienNumber)
-	{
-		return this.definitionData.get(alienNumber);
+	public DefinitionsParser(List<String> lineDefinition) {
+		this.lineDefinition = lineDefinition;
 	}
 
 	public void addLine(String line)
@@ -26,8 +18,9 @@ public class Definitions {
 		lineDefinition.add(line);
 	}
 
-	public void parse()
+	public Definitions parse()
 	{
+		Definitions definitions = new Definitions();
 		for(String line : lineDefinition)
 		{
 
@@ -39,10 +32,11 @@ public class Definitions {
 				alienNumber = definitionTokens[0];
 				romanNumber = definitionTokens[2];
 				Roman romanNumberEnum = Roman.valueOf(romanNumber);
-				addDefinition(alienNumber.toUpperCase(), romanNumberEnum);
+				definitions.addDefinition(alienNumber.toUpperCase(), romanNumberEnum);
 			}catch(IndexOutOfBoundsException | IllegalArgumentException ex){
 			}
 		}
+		return definitions;
 	}
 
 }

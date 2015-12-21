@@ -1,34 +1,31 @@
-package br.com.vagas.information;
+package br.com.vagas.parser;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
+import br.com.vagas.model.Definitions;
+import br.com.vagas.model.Prices;
+import br.com.vagas.model.Questions;
 import br.com.vagas.util.NumberConverter;
 
-public class Questions {
-	Map<String, String> questionAndAnswers = new LinkedHashMap<String, String>();
+public class QuestionsParser {
 	List<String> lineQuestions = new ArrayList<String>();
 	Prices prices = null;
 	Definitions definitions = null;
 	public static final String NO_IDEA_ANSWER = "I have no idea what you are talking about.";
 
-	public Collection<String> getAnswers() {
-		return questionAndAnswers.values();
-	}
-
-	public void addLine(String line) {
-		lineQuestions.add(line);
-	}
-
-	public void parse(Definitions definitions, Prices prices) {
-		this.prices = prices;
+	public QuestionsParser(List<String> lineQuestions , Definitions definitions, Prices prices) {
+		this.lineQuestions = lineQuestions;
 		this.definitions = definitions;
+		this.prices = prices;
+	}
+
+
+	public Questions parse() {
 		String auxLine = null;
+		Questions questions = new Questions();
 		for (String line : lineQuestions) {
 			auxLine = line.trim().toUpperCase();
 			String answer = null;
@@ -40,8 +37,9 @@ public class Questions {
 			if (answer == null) {
 				answer = NO_IDEA_ANSWER;
 			}
-			questionAndAnswers.put(line, answer);
+			questions.addQuestionAndAnswer(line, answer);
 		}
+		return questions;
 
 	}
 

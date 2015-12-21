@@ -1,15 +1,22 @@
 package br.com.vagas.processors;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import br.com.vagas.information.Definitions;
-import br.com.vagas.information.Prices;
-import br.com.vagas.information.Questions;
+import br.com.vagas.model.Definitions;
+import br.com.vagas.model.Prices;
+import br.com.vagas.model.Questions;
+import br.com.vagas.parser.DefinitionsParser;
+import br.com.vagas.parser.PricesParser;
+import br.com.vagas.parser.QuestionsParser;
 import br.com.vagas.util.FileUtil;
 
 public class MerchantsGuideProcessor {
 	List<String> linesToProcess;
+	List<String> listLineDefinitions = new ArrayList<String>();
+	List<String> listLinePrices = new ArrayList<String>();
+	List<String> listLineQuestions = new ArrayList<String>();
 	Definitions definitions = new Definitions();
 	Prices prices = new Prices();
 	Questions questions = new Questions();
@@ -33,9 +40,9 @@ public class MerchantsGuideProcessor {
 
 	private void parseInformation()
 	{
-		definitions.parse();
-		prices.parse(definitions);
-		questions.parse(definitions, prices);
+		definitions = new DefinitionsParser(listLineDefinitions).parse();
+		prices = new PricesParser(listLinePrices, definitions).parse();
+		questions = new QuestionsParser(listLineQuestions, definitions, prices).parse();
 	}
 
 	private void separateInformation()
@@ -46,14 +53,14 @@ public class MerchantsGuideProcessor {
 			auxLine = line.trim().toUpperCase();
 			if(isDefinition(auxLine))//Definition
 			{
-				definitions.addLine(line);
+				listLineDefinitions.add(line);
 			}
 			else if(isPriceInformation(auxLine))// Price Information
 			{
-				prices.addLine(line);
+				listLinePrices.add(line);
 			}
 			else if(isQuestion(auxLine)){ //Question
-				questions.addLine(line);
+				listLineQuestions.add(line);
 			}
 		}
 

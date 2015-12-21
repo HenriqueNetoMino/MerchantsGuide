@@ -1,39 +1,40 @@
-package br.com.vagas.information;
+package br.com.vagas.parser;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import br.com.vagas.model.Definitions;
+import br.com.vagas.model.Prices;
 import br.com.vagas.util.NumberConverter;
 
-public class Prices {
+public class PricesParser {
 
-	Map<String, BigDecimal> itemPrices = new HashMap<String, BigDecimal>();
 	List<String> linePrice = new ArrayList<String>();
-
-	public void addItemPrince(String item, BigDecimal price) {
-		itemPrices.put(item, price);
-	}
+	Definitions definitions;
 
 	public void addLine(String line) {
 		linePrice.add(line);
 	}
 
-	public void parse(Definitions definitions) {
+
+	public PricesParser(List<String> linePrice, Definitions definitions) {
+		this.linePrice = linePrice;
+		this.definitions = definitions;
+	}
+
+	public Prices parse() {
+		Prices prices = new Prices();
 		for (String line : linePrice) {
 			String itemName = getItemName(line);
 			BigDecimal itemPrice = calculateItemPrice(line, itemName,definitions);
 			if (itemName != null && !"".equals(itemName.trim()) && itemPrice != BigDecimal.ZERO) {
-				addItemPrince(itemName.toUpperCase(), itemPrice);
+				prices.addItemPrince(itemName.toUpperCase(), itemPrice);
 			}
 		}
+		return prices;
 	}
 
-	public BigDecimal getItemPrice(String itemName) {
-		return itemPrices.get(itemName);
-	}
 
 	private BigDecimal calculateItemPrice(String line, String itemName,Definitions definitions) {
 		BigDecimal itemPrice = BigDecimal.ZERO;
