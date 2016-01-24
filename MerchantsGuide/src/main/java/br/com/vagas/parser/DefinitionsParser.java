@@ -31,7 +31,7 @@ public class DefinitionsParser {
 				String[] definitionTokens = line.split(" ");
 				alienNumber = definitionTokens[0];
 				romanNumber = definitionTokens[2];
-				Roman romanNumberEnum = Roman.valueOf(romanNumber);
+				Roman romanNumberEnum = Roman.valueOf(romanNumber.toUpperCase());
 				definitions.addDefinition(alienNumber.toUpperCase(), romanNumberEnum);
 			}catch(IndexOutOfBoundsException | IllegalArgumentException ex){
 			}
